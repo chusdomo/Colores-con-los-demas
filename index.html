@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mezclas de Colores</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 20px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 10px;
+      font-size: 3em;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+    }
+
+    /* Vista previa del color */
+    .preview {
+      width: 100%;
+      height: 200px;
+      border-radius: 15px;
+      margin: 30px 0;
+      transition: background-color 0.3s ease;
+      box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    /* Sliders */
+    .slider-container {
+      background: #fff;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+      margin-top: 30px;
+    }
+    .slider-container h2 {
+      font-size: 1.4em;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    .slider-group {
+      margin-bottom: 15px;
+    }
+    .slider-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+    .slider-group input[type="range"] {
+      width: 100%;
+    }
+    .value-display {
+      float: right;
+      font-weight: normal;
+      color: #666;
+    }
+
+    /* Tarjetas de colores */
+    .nav-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
+      margin: 40px 0;
+    }
+    .color-card {
+      background: white;
+      border-radius: 15px;
+      padding: 25px;
+      text-align: center;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+      transition: all 0.4s ease;
+      text-decoration: none;
+      color: white;
+      font-weight: bold;
+      position: relative;
+      overflow: hidden;
+    }
+    .color-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      background: rgba(255,255,255,0.1);
+    }
+    .color-card:hover {
+      transform: translateY(-10px) scale(1.02);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+      text-decoration: none;
+      color: white;
+    }
+    .color-card:hover::before {
+      opacity: 1;
+    }
+    .color-preview {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      margin: 0 auto 20px;
+      border: 4px solid rgba(255,255,255,0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5em;
+      position: relative;
+    }
+    .color-card h3 {
+      margin: 15px 0 10px;
+      font-size: 1.4em;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+    }
+    @media (max-width: 768px) {
+      .container {
+        padding: 20px;
+        margin: 10px;
+      }
+      h1 {
+        font-size: 2.2em;
+      }
+      .nav-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+      .color-preview {
+        width: 60px;
+        height: 60px;
+      }
+    }
+    /* Animación */
+    .color-card {
+      animation: fadeInUp 0.6s ease forwards;
+    }
+    .color-card:nth-child(1) { animation-delay: 0.1s; }
+    .color-card:nth-child(2) { animation-delay: 0.2s; }
+    .color-card:nth-child(3) { animation-delay: 0.3s; }
+    .color-card:nth-child(4) { animation-delay: 0.4s; }
+    .color-card:nth-child(5) { animation-delay: 0.5s; }
+    .color-card:nth-child(6) { animation-delay: 0.6s; }
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>🎨 Mezclas de Colores</h1>
+
+  <!-- Vista previa del color -->
+  <div id="preview" class="preview"></div>
+
+  <!-- Sliders -->
+  <div class="slider-container">
+    <h2>🎨 Ajusta tu Color</h2>
+
+    <div class="slider-group">
+      <label>R: Rojo <span class="value-display" id="red-value">0</span></label>
+      <input type="range" min="0" max="10" value="0" data-color="red">
+    </div>
+
+    <div class="slider-group">
+      <label>G: Verde <span class="value-display" id="green-value">0</span></label>
+      <input type="range" min="0" max="10" value="0" data-color="green">
+    </div>
+
+    <div class="slider-group">
+      <label>B: Azul <span class="value-display" id="blue-value">0</span></label>
+      <input type="range" min="0" max="10" value="0" data-color="blue">
+    </div>
+
+    <div class="slider-group">
+      <label>C: Cian <span class="value-display" id="cyan-value">0</span></label>
+      <input type="range" min="0" max="10" value="0" data-color="cyan">
+    </div>
+
+    <div class="slider-group">
+      <label>M: Magenta <span class="value-display" id="magenta-value">0</span></label>
+      <input type="range" min="0" max="10" value="0" data-color="magenta">
+    </div>
+
+    <div class="slider-group">
+      <label>Y: Amarillo <span class="value-display" id="yellow-value">0</span></label>
+      <input type="range" min="0" max="10" value="0" data-color="yellow">
+    </div>
+
+    <div class="slider-group">
+      <label>Blanco <span class="value-display" id="white-value">0</span></label>
+      <input type="range" min="0" max="10" value="0" data-color="white">
+    </div>
+
+    <div class="slider-group">
+      <label>Negro <span class="value-display" id="black-value">0</span></label>
+      <input type="range" min="0" max="10" value="0" data-color="black">
+    </div>
+  </div>
+
+  <!-- Tarjetas de colores predefinidos -->
+  <nav class="nav-grid">
+    <a href="azul-mezclas.html" class="color-card azul">
+      <div class="color-preview" style="background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);">
+        💙
+      </div>
+      <h3>Mezclas Azul</h3>
+    </a>
+    <a href="rojo-mezclas.html" class="color-card rojo">
+      <div class="color-preview" style="background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);">
+        ❤️
+      </div>
+      <h3>Mezclas Rojo</h3>
+    </a>
+    <a href="verde-mezclas.html" class="color-card verde">
+      <div class="color-preview" style="background: linear-gradient(135deg, #56cc9d 0%, #19d895 100%);">
+        💚
+      </div>
+      <h3>Mezclas Verde</h3>
+    </a>
+    <a href="naranja-mezclas.html" class="color-card naranja">
+      <div class="color-preview" style="background: linear-gradient(135deg, #ffa726 0%, #ff7043 100%);">
+        🧡
+      </div>
+      <h3>Mezclas Naranja</h3>
+    </a>
+    <a href="violeta-mezclas.html" class="color-card violeta">
+      <div class="color-preview" style="background: linear-gradient(135deg, #b39ddb 0%, #9575cd 100%);">
+        💜
+      </div>
+      <h3>Mezclas Violeta</h3>
+    </a>
+    <a href="amarillo-mezclas.html" class="color-card amarillo">
+      <div class="color-preview" style="background: linear-gradient(135deg, #ffd54f 0%, #ffb300 100%);">
+        💛
+      </div>
+      <h3>Mezclas Amarillo</h3>
+    </a>
+  </nav>
+
+</div>
+
+<script>
+  const sliders = document.querySelectorAll('.slider-container input[type="range"]');
+  const preview = document.getElementById('preview');
+
+  function getSliderValue(colorName) {
+    const input = document.querySelector(`input[data-color="${colorName}"]`);
+    return parseInt(input.value);
+  }
+
+  function updateColor() {
+    let r = getSliderValue("red");
+    let g = getSliderValue("green");
+    let b = getSliderValue("blue");
+
+    r += getSliderValue("magenta") + getSliderValue("yellow");
+    g += getSliderValue("yellow") + getSliderValue("cyan");
+    b += getSliderValue("cyan") + getSliderValue("magenta");
+
+    const white = getSliderValue("white");
+    const black = getSliderValue("black");
+
+    if (white > 0) {
+      r = Math.min(10, r + white / 2);
+      g = Math.min(10, g + white / 2);
+      b = Math.min(10, b + white / 2);
+    }
+
+    if (black > 0) {
+      r = Math.max(0, r - black / 2);
+      g = Math.max(0, g - black / 2);
+      b = Math.max(0, b - black / 2);
+    }
+
+    function scale(val) {
+      return Math.round((val / 10) * 255);
+    }
+
+    const rgb = `rgb(${scale(r)}, ${scale(g)}, ${scale(b)})`;
+    preview.style.backgroundColor = rgb;
+
+    // Actualizar valores mostrados
+    document.getElementById("red-value").textContent = r;
+    document.getElementById("green-value").textContent = g;
+    document.getElementById("blue-value").textContent = b;
+    document.getElementById("cyan-value").textContent = getSliderValue("cyan");
+    document.getElementById("magenta-value").textContent = getSliderValue("magenta");
+    document.getElementById("yellow-value").textContent = getSliderValue("yellow");
+    document.getElementById("white-value").textContent = white;
+    document.getElementById("black-value").textContent = black;
+  }
+
+  sliders.forEach(slider => {
+    slider.addEventListener("input", updateColor);
+  });
+
+  updateColor(); // Inicializar
+</script>
+
+</body>
+</html>
